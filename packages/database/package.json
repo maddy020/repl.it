@@ -1,11 +1,11 @@
 {
-  "name": "database",
+  "name": "@repo/database",
   "version": "1.0.0",
   "main": "lib/prisma.ts",
+  "type":"module",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "type":"module",
   "keywords": [],
   "author": "",
   "license": "ISC",
