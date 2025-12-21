@@ -11,9 +11,10 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
-    "@repo/database":"*",
+    "@repo/database": "*",
     "bcrypt": "^6.0.0",
     "brcypt": "^1.0.1",
+    "bullmq": "^5.66.2",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.2.1",

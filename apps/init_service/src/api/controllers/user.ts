@@ -7,7 +7,6 @@ export const User = {
     try {
       const { formData } = req.body;
       const { name, email, password } = formData;
-      console.log("Signup formData:", formData);
       if (!(name || email || password)) {
         return res.status(404).json({ message: "Missing fields" });
       }
@@ -26,11 +25,10 @@ export const User = {
 
       const hashedPassword = await bcrypt.hash(password, genSalt);
       const response = await model.User.create(name, email, hashedPassword);
-      console.log(response);
-      if (response.status == 200) {
-        const payload = { name, email };
+      if (response.status == 200 && response.user) {
+        const payload = { name, email, id: response.user.id };
         const jwt_secret = process.env.JWT_SECRET;
-        const token = jwt.sign(payload, jwt_secret || "JWTSECRET");
+        const token = jwt.sign(payload, jwt_secret || "SECRET_JWT");
         return res
           .status(200)
           .json({ message: "User Signed Up Successfully", status: 200, token });
@@ -58,9 +56,9 @@ export const User = {
         if (user) {
           const isPasswordValid = await bcrypt.compare(password, user.password);
           if (isPasswordValid) {
-            const payload = { name: user.name, email: user.email };
+            const payload = { name: user.name, email: user.email, id: user.id };
             const jwt_secret = process.env.JWT_SECRET;
-            const token = jwt.sign(payload, jwt_secret || "JWTSECRET");
+            const token = jwt.sign(payload, jwt_secret || "SECRET_JWT");
             return res.status(200).json({
               message: "User Logged In Successfully",
               token,
@@ -88,13 +86,16 @@ export const User = {
         return res.status(404).json({ message: "Missing fields" });
       }
       const response = await model.User.check(email);
-      console.log("Check Response:", response);
       if (response.status == 200) {
         const user = response.user;
         if (user) {
-          const payload = { name: user.name, email: user.email };
+          const payload = {
+            name: user.name,
+            email: user.email,
+            id: user.id,
+          };
           const jwt_secret = process.env.JWT_SECRET;
-          const token = jwt.sign(payload, jwt_secret || "JWTSECRET");
+          const token = jwt.sign(payload, jwt_secret || "SECRET_JWT");
           return res.status(200).json({
             message: "User Logged In Successfully",
             token,
@@ -110,12 +111,10 @@ export const User = {
             hashedPassword,
             providerId
           );
-          console.log("Create Response:", createResponse);
           if (createResponse.status == 200) {
             const payload = { name, email };
             const jwt_secret = process.env.JWT_SECRET;
-            const token = jwt.sign(payload, jwt_secret || "JWTSECRET");
-            console.log("Generated Token:", token);
+            const token = jwt.sign(payload, jwt_secret || "SECRET_JWT");
             return res.status(200).json({
               message: "User Signed Up Successfully",
               token,
