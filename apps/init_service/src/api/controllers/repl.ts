@@ -7,33 +7,37 @@ const queue = createQueue(
   process.env.REDIS_NAME || "init_queue",
   process.env.REDIS_HOST || "localhost"
 );
+
+const possibleReplNames=["coder","100x","master","guru","ninja","hacker","pro","dev","techie","geek","wizard","rockstar","champion","ace","maverick","virtuoso","specialist","whiz","buff","enthusiast"];
+
 export const Repl = {
   create: async (req: CustomRequest, res: Response) => {
-    const { language, name } = req.body;
+    const { language } = req.body;
     try {
       const user = req.user;
-      console.log("user", user, language, name);
       if (!user) {
         return res.status(401).json({ message: "Unauthorized" });
       }
-      if (!language || !name) {
+      const name1 = possibleReplNames[Math.floor(Math.random() * possibleReplNames.length)];
+      const name2 = possibleReplNames[Math.floor(Math.random() * possibleReplNames.length)];
+      const replId=`${name1}${name2}${Math.floor(Math.random()*10000000)}`;
+      if (!language || !replId) {
         return res
           .status(400)
-          .json({ message: "Language and name can not be empty" });
+          .json({ message: "Language and replId can not be empty" });
       }
-      const repl = await model.Repl.create(user.id, language, name);
+
+      const repl = await model.Repl.create(user.id, language, replId);
       if (repl.status === 200) {
         await queue.add(
-          name,
-          {
-            data: {
+          replId,
+            {       
               language,
             },
-          },
           {
             removeOnComplete: true,
             removeOnFail: true,
-            jobId: name,
+            jobId: replId,
           }
         );
         return res

@@ -1,7 +1,6 @@
 import { Queue } from "bullmq";
 
 export const createQueue = (name: string, redisHost: string) => {
-  console.log("redis host", redisHost);
   return new Queue(name, {
     connection: {
       host: redisHost,

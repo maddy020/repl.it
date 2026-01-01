@@ -23,7 +23,6 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
-        console.log("credentials", credentials);
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
           {
@@ -33,7 +32,6 @@ export const authOptions: NextAuthOptions = {
             },
           }
         );
-        console.log("res", res.data);
         const { user, token } = res.data;
         if (!user || !token) return null;
         return {

@@ -1,10 +1,14 @@
 import { Worker, Job } from "bullmq";
-
+import {CopyObject} from "@repo/aws_utils"
+import {mountFolderInRunner} from "@repo/aws_utils"
 const queueName = process.env.REDIS_QUEUE_NAME || "init_queue";
 
 const handleJob = async (job: Job) => {
   try {
-    console.log(`Processing job with id ${job.id} and data:`, job.data);
+    const { language } = job.data;
+    const replId = job.id!;
+    await CopyObject(replId, language);
+    await mountFolderInRunner(replId,language)
   } catch (error) {
     console.error("Error processing job:", error);
   }

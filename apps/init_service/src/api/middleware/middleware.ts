@@ -26,7 +26,6 @@ export async function checkUser(
         .json({ message: "Invalid Credentials", success: false });
     }
     const decodedJwt: any = jwt.decode(token);
-    console.log("decodedJwt", decodedJwt);
     req.user = {
       name: decodedJwt.name,
       email: decodedJwt.email,

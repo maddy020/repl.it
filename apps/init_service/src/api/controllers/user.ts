@@ -80,7 +80,6 @@ export const User = {
   signUpWithGoogle: async (req: Request, res: Response) => {
     try {
       const { formData } = req.body;
-      console.log("formData", formData);
       const { name, email, providerId } = formData;
       if (!(name || email || providerId)) {
         return res.status(404).json({ message: "Missing fields" });
@@ -112,7 +111,7 @@ export const User = {
             providerId
           );
           if (createResponse.status == 200) {
-            const payload = { name, email };
+            const payload = { name, email ,id:createResponse.user?.id };
             const jwt_secret = process.env.JWT_SECRET;
             const token = jwt.sign(payload, jwt_secret || "SECRET_JWT");
             return res.status(200).json({
