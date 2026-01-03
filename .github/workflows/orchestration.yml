@@ -1,0 +1,17 @@
+name: Orchestrator CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "apps/orchestration/**"
+      - "Docker/orchestration/**"
+
+jobs:
+  runner:
+    uses: ./.github/workflows/docker-build.yml
+    with:
+      context: apps/orchestration
+      dockerfile: ../../Docker/orchestration/DockerFile
+      image_name: orchestration
+    secrets: inherit

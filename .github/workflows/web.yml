@@ -1,0 +1,17 @@
+name: Web CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "apps/web/**"
+      - "Docker/web/**"
+
+jobs:
+  runner:
+    uses: ./.github/workflows/docker-build.yml
+    with:
+      context: apps/web
+      dockerfile: ../../Docker/web/DockerFile
+      image_name: web
+    secrets: inherit

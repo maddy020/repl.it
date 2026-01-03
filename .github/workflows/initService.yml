@@ -1,0 +1,17 @@
+name: InitService CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "apps/init_service/**"
+      - "Docker/init_service/**"
+
+jobs:
+  runner:
+    uses: ./.github/workflows/docker-build.yml
+    with:
+      context: apps/init_service
+      dockerfile: ../../Docker/init_service/DockerFile
+      image_name: init_service
+    secrets: inherit

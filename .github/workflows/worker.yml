@@ -1,0 +1,17 @@
+name: Worker CI
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - "apps/worker/**"
+      - "Docker/worker/**"
+
+jobs:
+  runner:
+    uses: ./.github/workflows/docker-build.yml
+    with:
+      context: apps/worker
+      dockerfile: ../../Docker/worker/DockerFile
+      image_name: worker
+    secrets: inherit
