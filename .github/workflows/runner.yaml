@@ -1,4 +1,4 @@
-name: Runner Image CI
+name: Runner CI
 
 on:
   push:
@@ -13,6 +13,4 @@ jobs:
     with:
       context: apps/runner
       image_name: runner
-    secrets:
-      DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-      DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+    secrets: inherit
