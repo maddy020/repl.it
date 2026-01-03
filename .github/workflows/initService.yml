@@ -12,6 +12,6 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     with:
       context: apps/init_service
-      dockerfile: ../../Docker/init_service/DockerFile
+      dockerfile: ../../Docker/init_service/Dockerfile
       image_name: init_service
     secrets: inherit

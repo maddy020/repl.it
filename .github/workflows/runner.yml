@@ -12,6 +12,6 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     with:
       context: apps/runner
-      dockerfile: ../../Docker/runner/DockerFile
+      dockerfile: ../../Docker/runner/Dockerfile
       image_name: runner
     secrets: inherit

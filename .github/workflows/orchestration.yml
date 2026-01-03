@@ -12,6 +12,6 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     with:
       context: apps/orchestration
-      dockerfile: ../../Docker/orchestration/DockerFile
+      dockerfile: ../../Docker/orchestration/Dockerfile
       image_name: orchestration
     secrets: inherit

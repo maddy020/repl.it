@@ -12,6 +12,6 @@ jobs:
     uses: ./.github/workflows/docker-build.yml
     with:
       context: apps/web
-      dockerfile: ../../Docker/web/DockerFile
+      dockerfile: ../../Docker/web/Dockerfile
       image_name: web
     secrets: inherit
