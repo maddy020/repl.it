@@ -2,14 +2,14 @@ FROM node:20-bookworm
 
 WORKDIR /app
 
-COPY apps/runner/package.json ./
+COPY package.json ./
 
 RUN npm install typescript
 
-COPY apps/runner/tsconfig.json ./
+COPY tsconfig.json ./
 
 RUN npm install
 
-COPY apps/runner/src ./src
+COPY src ./src
 
 CMD ["npm", "run", "dev"]
