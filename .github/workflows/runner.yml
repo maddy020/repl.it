@@ -9,7 +9,7 @@ on:
 
 jobs:
   runner:
-    uses: ./docker-build.yml
+    uses: ./.github/workflows/docker-build.yml
     with:
       context: apps/runner
       image_name: runner
