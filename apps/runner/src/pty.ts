@@ -15,7 +15,7 @@ export class TerminalManager {
             name: "xterm",
             cols: 80,
             rows: 24,
-            cwd:`/home/madhav-setia/repl.it/apps/runner/src/workspace/${replId}`,
+            cwd:`/workspace`,
         })
         term.onData((data: string) => {
             onData(data, term.pid as unknown as IPty);

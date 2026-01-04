@@ -2,24 +2,36 @@ dotenv.config();
 import express from "express";
 import type { Request, Response } from "express";
 import dotenv from "dotenv";
+import path from "path"
+import { fileURLToPath } from "url";
 import { execa } from "execa";
 const app = express();
+app.use(express.json());
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const chartPath = path.resolve(
+  __dirname,
+  "../../../helm/repl-service"
+);
 
 app.post("/start", async (req: Request, res: Response) => {
     try {
-        const { replId ,host} = req.body;
+        const { replId, host } = req.body;
         if (!replId) return res.status(404).json({ message: "ReplId not found" });
-            await execa('helm', [
+        await execa("helm", [
             "upgrade",
             "--install",
             replId,
-            "../../../helm/repl-service",
+            chartPath,
             "--namespace",
             "default",
             "--set",
             `host=${host}`,
-            "--set image.tag=latest-stable"
-        ])
+            "--set",
+            "image.tag=latest-stable",
+        ]);
         return res.status(200).json({ message: "Service started" });
     } catch (error) {
         console.log("Error in starting the service", error);

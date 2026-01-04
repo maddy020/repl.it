@@ -1,6 +1,9 @@
 import { Worker, Job } from "bullmq";
 import {CopyObject} from "@repo/aws_utils"
 import axios from "axios";
+import dotenv from "dotenv";
+
+dotenv.config();
 const queueName = process.env.REDIS_QUEUE_NAME || "init_queue";
 
 const handleJob = async (job: Job) => {

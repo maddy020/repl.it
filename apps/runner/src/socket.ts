@@ -31,16 +31,9 @@ export const initWebSocket = (httpServer: any) => {
       try {
         const files: string[] = [];
       getAllFilesSync({
-        dirPath: `/home/madhav-setia/repl.it/apps/runner/src/workspace/${data.replId}`,
+        dirPath: `/workspace`,
         files,
       });
-      if(files.length === 0){
-        await mountExistingFolderInRunner(data.replId);
-        getAllFilesSync({
-        dirPath: `/home/madhav-setia/repl.it/apps/runner/src/workspace/${data.replId}`,
-        files,
-      });
-      }
       files.forEach((file) => {
         const relativePath = file.split(`${data.replId}/`)[1];
         if (!relativePath) return;
