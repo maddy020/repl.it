@@ -1,17 +1,17 @@
 FROM node:20-bookworm
 
-WORKDIR /app
+WORKDIR /code
 
-COPY package.json ./
-
-RUN npm install typescript
-
-COPY tsconfig.json ./
+COPY package*.json ./
 
 RUN npm install
 
 COPY src ./src
 
+COPY . .
+
+RUN npm run build
+
 EXPOSE 8000
 
-CMD ["npm", "run", "dev"]
+CMD [ "node", "dist/index.js" ]
