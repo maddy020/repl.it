@@ -11,8 +11,6 @@ export const initWebSocket = (httpServer: any) => {
     },
   });
 
-  console.log("frontend url",process.env.FRONTEND_URL);
-
   io.on("connection", (socket) => {
     const fileGraph = new Map<string, Set<{fileName:string,filePath:string}>>();
     const terminalManager = new TerminalManager();

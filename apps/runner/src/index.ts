@@ -12,5 +12,5 @@ const httpServer = createServer(app);
 
 initWebSocket(httpServer);
 httpServer.listen(PORT, () =>
-  console.log(`Runner is running at the PORT ${PORT}`)
+  console.log(`Runner is running at the PORT ${PORT} ${process.env.PORT}`)
 );
