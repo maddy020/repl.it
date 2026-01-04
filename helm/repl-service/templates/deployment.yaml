@@ -23,8 +23,6 @@ spec:
         {{- toYaml . | nindent 8 }}
         {{- end }}
     spec:
-      serviceAccountName: {{ include "repl-service.serviceAccountName" . }}
-
       initContainers:
         - name: copy-s3-resources
           image: amazon/aws-cli
@@ -34,7 +32,9 @@ spec:
               aws s3 cp s3://madhav-replit/code/{{ .Release.Name }} /workspace --recursive
           envFrom:
            - secretRef:
-               name: aws-creds    
+               name: aws-creds
+           - configMapRef:
+               name: {{ include "repl-service.fullname" . }}        
           volumeMounts:
             - name: workspace
               mountPath: /workspace
@@ -43,7 +43,9 @@ spec:
         - name: {{ .Chart.Name }}
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
-
+          envFrom:
+           - secretRef:
+               name: aws-creds 
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}

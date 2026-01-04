@@ -1,7 +1,7 @@
 import { Server } from "socket.io";
 import { TerminalManager } from "./pty.js";
 import { getAllFilesSync,getFileContent, saveFileContent } from "./file.js";
-import {saveContentToS3,mountExistingFolderInRunner} from "./aws.js"
+import {saveContentToS3} from "./aws.js"
 
 export const initWebSocket = (httpServer: any) => {
 
@@ -10,6 +10,8 @@ export const initWebSocket = (httpServer: any) => {
       origin: process.env.FRONTEND_URL,
     },
   });
+
+  console.log("frontend url",process.env.FRONTEND_URL);
 
   io.on("connection", (socket) => {
     const fileGraph = new Map<string, Set<{fileName:string,filePath:string}>>();
