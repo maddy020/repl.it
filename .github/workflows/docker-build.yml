@@ -51,5 +51,5 @@ jobs:
           file: ${{ inputs.context }}/${{ inputs.dockerfile }}
           push: true
           tags: |
-            ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:${{ inputs.tag }}
             ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:${{ github.sha }}
+            ${{ secrets.DOCKER_USERNAME }}/${{ inputs.image_name }}:${{ inputs.tag }}

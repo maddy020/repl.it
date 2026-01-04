@@ -1,6 +1,6 @@
 import { Worker, Job } from "bullmq";
 import {CopyObject} from "@repo/aws_utils"
-import {mountFolderInRunner} from "@repo/aws_utils"
+import axios from "axios";
 const queueName = process.env.REDIS_QUEUE_NAME || "init_queue";
 
 const handleJob = async (job: Job) => {
@@ -8,7 +8,10 @@ const handleJob = async (job: Job) => {
     const { language } = job.data;
     const replId = job.id!;
     await CopyObject(replId, language);
-    await mountFolderInRunner(replId,language)
+    await axios.post(`${process.env.ORCHESTRATION_SERVICE_URL}/start`, {
+      replId,
+      host: `${replId}.${process.env.BASE_DOMAIN_NAME}`,
+    });
   } catch (error) {
     console.error("Error processing job:", error);
   }
