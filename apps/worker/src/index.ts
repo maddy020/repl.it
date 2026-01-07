@@ -25,6 +25,7 @@ const worker = new Worker(queueName, handleJob, {
     url: process.env.REDIS_URL || "redis://localhost:6379",
     port: process.env.REDIS_PORT ? parseInt(process.env.REDIS_PORT) : 6379,
   },
+  lockDuration:60000,
 });
 
 worker.on("completed", (job) => {

@@ -13,7 +13,7 @@ export default function Repl() {
   const [currentFile,setCurrentFile]=useState<string>("src/index.ts");
    const { repl } = useParams();
   useEffect(() => {
-        const socketConnection = io(`${process.env.NEXT_PUBLIC_SOCKET_URL}`, {
+        const socketConnection = io(`ws://${repl}.replit.bemadhav.xyz`, {
             reconnectionDelayMax: 1000
         });
         setSocket(socketConnection);

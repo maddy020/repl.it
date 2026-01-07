@@ -19,6 +19,7 @@ const chartPath = path.resolve(
 app.post("/start", async (req: Request, res: Response) => {
     try {
         const { replId, host } = req.body;
+        console.log("host in this",host);
         if (!replId) return res.status(404).json({ message: "ReplId not found" });
         await execa("helm", [
             "upgrade",

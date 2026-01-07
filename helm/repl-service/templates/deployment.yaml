@@ -45,7 +45,9 @@ spec:
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
            - secretRef:
-               name: aws-creds 
+               name: aws-creds
+           - configMapRef:
+               name: {{ include "repl-service.fullname" . }}
           ports:
             - name: http
               containerPort: {{ .Values.service.port }}
