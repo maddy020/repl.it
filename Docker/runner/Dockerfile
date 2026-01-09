@@ -1,6 +1,6 @@
 FROM node:20-bookworm
 
-WORKDIR /workspace
+WORKDIR /code
 
 COPY package*.json ./
 
