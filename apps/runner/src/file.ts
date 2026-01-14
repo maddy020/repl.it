@@ -26,6 +26,7 @@ const getAllFilesSync = ({ dirPath, files}: { dirPath: string, files: string[] }
     console.log("check If Path exists",checkIfPathExists)
     if(!checkIfPathExists)return;
     const entries = fs.readdirSync(dirPath, { withFileTypes: true });
+    console.log("all entries in directory",entries);
     for (const entry of entries) {
         const fullPath = path.join(dirPath, entry.name);
 

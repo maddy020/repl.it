@@ -23,6 +23,7 @@ export default function Repl() {
       socket?.emit("replLoaded",{replId:repl});
       socket?.on("fileStructure", (data)=>{
         const {distances,fileGraph}=data;
+        console.log("file structure data",data);
         setDistanceFromRoot(distances);
         setFileGraph(fileGraph);
       })

@@ -35,6 +35,7 @@ export const initWebSocket = (httpServer: any) => {
         dirPath: `/workspace`,
         files,
       });
+      console.log("all files in the repl",files);
       files.forEach((file) => {
         const relativePath = file.split(`${data.replId}/`)[1];
         if (!relativePath) return;
