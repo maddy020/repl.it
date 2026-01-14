@@ -8,7 +8,7 @@ const queue = createQueue(
   process.env.REDIS_HOST || "localhost"
 );
 
-const possibleReplNames=["coder","100x","master","guru","ninja","hacker","pro","dev","techie","geek","wizard","rockstar","champion","ace","maverick","virtuoso","specialist","whiz","buff","enthusiast"];
+const possibleReplNames=["coder","master","guru","ninja","hacker","pro","dev","techie","geek","wizard","rockstar","champion","ace","maverick","virtuoso","specialist","whiz","buff","enthusiast"];
 
 export const Repl = {
   create: async (req: CustomRequest, res: Response) => {
@@ -50,4 +50,19 @@ export const Repl = {
       return res.status(500).json({ message: "Internal server error" });
     }
   },
+  get:async(req:CustomRequest,res:Response)=>{
+    try {
+      const user=req.user;
+      if(!user){
+        return res.status(401).json({message:"Unauthorized"});
+      }
+      const replRes=await model.Repl.getAllRepls(user.id);
+      if(replRes.status == 200){
+        return res.status(replRes.status).json({repls:replRes.repls});
+      }
+      return res.status(replRes.status).json({message:replRes.error})
+    } catch (error) {
+      return res.status(500).json({message:"Internal Server Error"})
+    }
+  }
 };

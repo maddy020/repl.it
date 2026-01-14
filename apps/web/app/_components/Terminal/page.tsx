@@ -38,6 +38,7 @@ export default function CodingTerminal({socket}:{socket:Socket | null}) {
                     break;
                 default:
                     socket?.emit("terminalData", { data });
+                    console.log("data", data);
                     break;
             }
         });

@@ -8,6 +8,6 @@ export interface CustomRequest extends Request {
   user?: {
     id: number;
     email: string;
-    name?: string;
+    name: string;
   };
 }

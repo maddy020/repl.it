@@ -30,7 +30,7 @@ export default function DropDownMenuPage({ session }: { session: Session }) {
   };
   return (
     <>
-      <button onClick={handleCreateRepl}>Create Repl</button>
+      <Button onClick={handleCreateRepl}>Create Repl</Button>
     </>
   );
 }

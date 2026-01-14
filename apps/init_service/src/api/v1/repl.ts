@@ -3,4 +3,5 @@ import { Repl } from "../controllers/repl.js";
 const router = Router();
 
 router.post("/create", Repl.create);
+router.get("/get", Repl.get);
 export default router;
