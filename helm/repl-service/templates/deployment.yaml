@@ -29,7 +29,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              aws s3 cp s3://madhav-replit/code/{{ .Release.Name }} /workspace --recursive
+              aws s3 cp s3://madhav-replit-616298762254-eu-north-1/code/{{ .Release.Name }} /workspace --recursive
           envFrom:
            - secretRef:
                name: aws-creds

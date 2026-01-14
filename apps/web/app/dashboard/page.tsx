@@ -5,7 +5,6 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { CustomSession } from '@repo/types';
-
 const Dashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedEnv, setSelectedEnv] = useState(null);
@@ -68,11 +67,23 @@ const Dashboard = () => {
     return matchesSearch && matchesFilter;
   });
 
-  const handleCreateRepl = (env:string) => {
-    console.log('Creating new repl with environment:', env);
-    setShowCreateModal(false);
-    setSelectedEnv(null);
-    // Add your repl creation logic here
+  const handleCreateRepl = async(env:string) => {
+   try {
+      console.log('Creating new repl with environment:', env);
+      const response=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/repl/create`,{
+        language:selectedEnv
+      },{
+        headers:{
+            Authorization:`Bearer ${(session as CustomSession)?.accessToken}`
+        }
+      })
+      console.log("response in creating the repl",response);
+      setShowCreateModal(false);
+      setSelectedEnv(null);
+   } catch (error) {
+      console.log("Error in creating the repl");
+   }
+
   };
 
   if(status === "loading"){

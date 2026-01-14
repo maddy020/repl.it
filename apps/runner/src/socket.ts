@@ -28,6 +28,7 @@ export const initWebSocket = (httpServer: any) => {
     });
 
     socket.on("replLoaded", async (data) => {
+      console.log("data in repl loaded",data);
       try {
         const files: string[] = [];
       getAllFilesSync({
@@ -94,7 +95,7 @@ export const initWebSocket = (httpServer: any) => {
     });
     socket.on("getFileContent",async(data)=>{
       const { replId, filePath } = data;
-      const fileContent=await getFileContent(`/home/madhav-setia/repl.it/apps/runner/src/workspace/${replId}/${filePath}`)
+      const fileContent=await getFileContent(`/workspace/${filePath}`)
       socket.emit("fileContent",{
         replId,
         filePath,
@@ -107,7 +108,7 @@ export const initWebSocket = (httpServer: any) => {
         let updatedContent=content;
         updatedContent=applyMonacoDiffs(updatedContent,diffBuff)
         console.log("updated content in backend",updatedContent);
-        await saveFileContent(updatedContent,`/home/madhav-setia/repl.it/apps/runner/src/workspace/${replId}/${filePath}`);
+        await saveFileContent(updatedContent,`/workspace/${filePath}`);
         await saveContentToS3(`code/${replId}`,filePath,updatedContent)
         socket.emit("fileContentSaved",{content:updatedContent})
        } catch (error) {
