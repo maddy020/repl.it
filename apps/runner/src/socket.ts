@@ -12,7 +12,7 @@ export const initWebSocket = (httpServer: any) => {
   });
 
   io.on("connection", (socket) => {
-    const fileGraph = new Map<string, Set<{fileName:string,filePath:string}>>();
+    const fileGraph = new Map<string, Map<string, {fileName:string,filePath:string}>>();
     const terminalManager = new TerminalManager();
 
     socket.on("requestTerminal", ({ replId }) => {
@@ -34,54 +34,60 @@ export const initWebSocket = (httpServer: any) => {
         dirPath: `/workspace`,
         files,
       });
-      files.forEach((file) => {
-        const relativePath = file.split(`workspace/`)[1];
-        if (!relativePath) return;
+        files.forEach((file) => {
+          const relativePath = file.split("workspace/")[1];
+          if (!relativePath) return;
 
-        const parts = relativePath.split("/");
+          const parts = relativePath.split("/");
 
-        // ROOT level file
-        if (parts.length === 1) {
-          if (!fileGraph.has(data.replId)) {
-            fileGraph.set(data.replId, new Set());
+          let parent = data.replId;
+          let currentPath = "";
+
+          for (let i = 0; i < parts.length; i++) {
+            const part = parts[i];
+            currentPath = (currentPath ? `${currentPath}/${part}` : part) as string;
+
+            if (!fileGraph.has(parent)) {
+              fileGraph.set(parent, new Map());
+            }
+
+            const children = fileGraph.get(parent)!;
+
+            // 👇 Use path as unique key
+            if (!children.has(currentPath)) {
+              children.set(currentPath, {
+                fileName: part as string,
+                filePath: currentPath,
+              });
+            }
+
+            parent = currentPath;
           }
-          fileGraph.get(data.replId)!.add({fileName:parts[0]!,filePath:relativePath});
-          return;
-        }
+        });
 
-        // Nested paths
-        let parent = data.replId;
-
-        for (let i = 0; i < parts.length; i++) {
-          const current = parts[i];
-
-          if (!fileGraph.has(parent)) {
-            fileGraph.set(parent, new Set());
-          }
-
-          fileGraph.get(parent)!.add({fileName:current!,filePath:relativePath});
-
-          parent = current;
-        }
-      });
       
       // given the file graph and we are here calculating the distance from root node which is replId
-      const distances=new Map<string,number>();
-      const queue:Array<{node:string,depth:number}>=[{node:data.replId,depth:0}];
-      while(queue.length>0){
-        const {node,depth}=queue.shift()!;
-        distances.set(node,depth);
-        const children=fileGraph.get(node);
-        if(children){
-          for(const child of children){
-            queue.push({node:child.fileName,depth:depth+1});
+        const distances = new Map<string, number>();
+        const queue = [{ node: data.replId, depth: 0 }];
+
+        while (queue.length) {
+          const { node, depth } = queue.shift()!;
+          distances.set(node, depth);
+
+          const children = fileGraph.get(node);
+          if (children) {
+            for (const child of children.keys()) {
+              queue.push({ node: child, depth: depth + 1 });
+            }
           }
         }
-      }
-      const fileGraphObj: Record<string, {fileName:string,filePath:string}[]> = {};
-      for (const [key, value] of fileGraph.entries()) {
-        fileGraphObj[key] = Array.from(value);
-      }
+
+        const fileGraphObj: Record<string, {fileName:string,filePath:string}[]> = {};
+
+        for (const [key, value] of fileGraph.entries()) {
+          fileGraphObj[key] = Array.from(value.values());
+        }
+
 
       const distancesObj: Record<string, number> = {};
       for (const [key, value] of distances.entries()) {
