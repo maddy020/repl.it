@@ -24,20 +24,19 @@ export const initWebSocket = (httpServer: any) => {
     });
 
     socket.on("terminalData", ({ data }) => {
+      console.log("terminal data", data);
       terminalManager.write(socket.id, data);
     });
 
     socket.on("replLoaded", async (data) => {
-      console.log("data in repl loaded",data);
       try {
         const files: string[] = [];
       getAllFilesSync({
         dirPath: `/workspace`,
         files,
       });
-      console.log("all files in the repl",files);
       files.forEach((file) => {
-        const relativePath = file.split(`${data.replId}/`)[1];
+        const relativePath = file.split(`workspace/`)[1];
         if (!relativePath) return;
 
         const parts = relativePath.split("/");
