@@ -24,7 +24,6 @@ export const initWebSocket = (httpServer: any) => {
     });
 
     socket.on("terminalData", ({ data }) => {
-      console.log("terminal data", data);
       terminalManager.write(socket.id, data);
     });
 
@@ -107,7 +106,6 @@ export const initWebSocket = (httpServer: any) => {
         const {content,diffBuff,filePath,replId}=data;
         let updatedContent=content;
         updatedContent=applyMonacoDiffs(updatedContent,diffBuff)
-        console.log("updated content in backend",updatedContent);
         await saveFileContent(updatedContent,`/workspace/${filePath}`);
         await saveContentToS3(`code/${replId}`,filePath,updatedContent)
         socket.emit("fileContentSaved",{content:updatedContent})

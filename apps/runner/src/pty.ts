@@ -28,7 +28,6 @@ export class TerminalManager {
     }
 
     write(terminalId: string, data: string) {
-        console.log("writing to terminal", terminalId, data,this.sessions[terminalId]);
         this.sessions[terminalId]?.terminal.write(data);
     }
 
