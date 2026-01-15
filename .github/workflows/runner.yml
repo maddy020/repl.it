@@ -2,7 +2,7 @@ name: Runner CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [ main , stable]
     paths:
       - "apps/runner/**"
       - "Docker/runner/**"
