@@ -99,13 +99,17 @@ export const initWebSocket = (httpServer: any) => {
       }
     });
     socket.on("getFileContent",async(data)=>{
-      const { replId, filePath } = data;
+      try {
+        const { replId, filePath } = data;
       const fileContent=await getFileContent(`/workspace/${filePath}`)
       socket.emit("fileContent",{
         replId,
         filePath,
         content: fileContent
       });
+      } catch (error) {
+        console.log("error in getting the file content",error);
+      }
     })
     socket.on("updateContent",async(data)=>{
       try {
