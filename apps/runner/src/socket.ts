@@ -116,8 +116,10 @@ export const initWebSocket = (httpServer: any) => {
         const {content,diffBuff,filePath,replId}=data;
         let updatedContent=content;
         updatedContent=applyMonacoDiffs(updatedContent,diffBuff)
-        await saveFileContent(updatedContent,`/workspace/${filePath}`);
-        await saveContentToS3(`code/${replId}`,filePath,updatedContent)
+        await saveFileContent(content,`/workspace/${filePath}`);
+        await saveContentToS3(`code/${replId}`,filePath,content)
+        // await saveFileContent(updatedContent,`/workspace/${filePath}`);
+        // await saveContentToS3(`code/${replId}`,filePath,updatedContent)
         socket.emit("fileContentSaved",{content:updatedContent})
        } catch (error) {
         console.log("Error in updating the content",error)  

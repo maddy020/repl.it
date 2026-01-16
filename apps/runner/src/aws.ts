@@ -51,9 +51,7 @@ const CopyObject=async(replId:string,language:string,ContinuationToken?:string)=
 }
 
 const saveContentToS3=async(key:string,filePath:string,content:string)=>{
-      console.log("process",process.env.BUCKET_NAME,process.env.AWS_ACCESS_KEY_ID,process.env.AWS_SECRET_ACCESS_KEY)
     try {
-      console.log("process",process.env.BUCKET_NAME,process.env.AWS_ACCESS_KEY_ID,process.env.AWS_SECRET_ACCESS_KEY)
       await s3Client.send(new PutObjectCommand({
         Bucket: process.env.BUCKET_NAME!,
         Key: `${key}/${filePath}`,
