@@ -33,6 +33,7 @@ export default function FileExplorer({
   }
 
   const handleClick = (filePath: string) => {
+    console.log("curr file path",filePath,currentFile);
     if (currentFile === filePath) return
     setCurrentFile(filePath)
     socket?.emit("getFileContent", { replId, filePath })

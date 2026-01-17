@@ -22,19 +22,12 @@ const Dashboard = () => {
       description: 'NodeJs : JavaScript runtime for server-side applications'
     },
     { 
-      id: 'python', 
-      name: 'Python', 
-      icon: '🐍', 
+      id: 'nextjs', 
+      name: 'Next.js', 
+      icon: '⚛️', 
       color: 'bg-blue-50 border-blue-200 hover:border-blue-400',
-      description: 'Versatile language for web, data science, and automation'
-    },
-    { 
-      id: 'golang', 
-      name: 'Go', 
-      icon: '🔷', 
-      color: 'bg-cyan-50 border-cyan-200 hover:border-cyan-400',
-      description: 'Fast, compiled language for scalable applications'
-    },
+      description: 'Versatile language for building web applications'
+    }
   ];
 
   useEffect(()=>{
@@ -69,7 +62,6 @@ const Dashboard = () => {
 
   const handleCreateRepl = async(env:string) => {
    try {
-      console.log('Creating new repl with environment:', env);
       const response=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/repl/create`,{
         language:selectedEnv
       },{
@@ -77,7 +69,6 @@ const Dashboard = () => {
             Authorization:`Bearer ${(session as CustomSession)?.accessToken}`
         }
       })
-      console.log("response in creating the repl",response);
       setShowCreateModal(false);
       setSelectedEnv(null);
    } catch (error) {
@@ -136,8 +127,7 @@ const Dashboard = () => {
             >
               <option value="all">All Environments</option>
               <option value="nodejs">Node.js</option>
-              <option value="python">Python</option>
-              <option value="golang">Go</option>
+              <option value="nextjs">Next.js</option>
             </select>
           </div>
         </div>
@@ -221,19 +211,6 @@ const Dashboard = () => {
                 </button>
               ))}
             </div>
-
-            {selectedEnv && (
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Project Name
-                </label>
-                <input
-                  type="text"
-                  placeholder="my-awesome-project"
-                  className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
-                />
-              </div>
-            )}
 
             <div className="flex gap-3">
               <button

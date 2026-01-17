@@ -2,7 +2,7 @@
 import { Socket } from 'socket.io-client';
 import Editor from '@monaco-editor/react';
 import * as monaco from "monaco-editor";
-import debounce from "lodash.debounce"
+// import debounce from "lodash.debounce"
 import { useEffect, useRef, useState } from 'react';
 
 export default function EditorComp({ 
@@ -21,9 +21,7 @@ export default function EditorComp({
   const [editorContent, setEditorContent] = useState<string>("")
   const [currContent, setCurrContent] = useState(editorContent);
   const socketRef = useRef<Socket | null>(null);
-  const fileRef = useRef<() => void | null>(null);
   const savingDiffBuff = useRef<DiffEvent[]>([])
-  const currDiffBuff = useRef<DiffEvent[]>([])
 
   useEffect(() => {
     socketRef.current = socket;
@@ -35,43 +33,21 @@ export default function EditorComp({
 
     socket?.on("fileContentSaved", (data) => {
       setCurrContent(data.content)
-      savingDiffBuff.current = [];
     })
   }, [socket])
-
-  useEffect(() => {
-    fileRef.current = debounce(() => {
-      if (currDiffBuff.current.length === 0 || savingDiffBuff.current.length != 0) return;
-      savingDiffBuff.current.push(...currDiffBuff.current);
-      currDiffBuff.current = [];
-      socket?.emit("updateContent", { 
-        content: currContent, 
+  return (
+    <div className="h-full flex flex-col bg-white">
+      <Editor
+        value={editorContent}
+        onChange={(value)=>{
+          console.log("change",value)
+          socket?.emit("updateContent",{ 
+        content: value, 
         diffBuff: savingDiffBuff.current, 
         filePath: currentFile, 
         replId 
       })
-    }, 2000)
-  })
-
-  const handleEditorDidMount = (
-    editor: monaco.editor.IStandaloneCodeEditor
-  ) => {
-    const model = editor.getModel();
-    if (!model) return;
-
-    model.onDidChangeContent((event) => {
-      currDiffBuff.current.push({
-        changes: event.changes
-      })
-      fileRef.current?.();
-    });
-  }
-
-  return (
-    <div className="h-full flex flex-col bg-white">
-      <Editor
-        onMount={handleEditorDidMount}
-        value={editorContent}
+        }}
         height="100%"
         language={currentFile.split(".")[1] === "ts" ? "typescript" : "json"}
         defaultLanguage="typescript"

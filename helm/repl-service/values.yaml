@@ -178,6 +178,6 @@ tolerations: []
 affinity: {}
 
 configMapValues: 
-  PORT: "8000"
+  RUNNERPORT: "8000"
   FRONTEND_URL: "http://localhost:3000"
   BUCKET_NAME: "madhav-replit-616298762254-eu-north-1"

@@ -34,14 +34,9 @@ export default function Repl() {
     <div className="h-screen flex flex-col bg-white">
       {/* Header */}
       <header className="border-b border-gray-200 bg-white">
-        <div className="px-6 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <h1 className="text-xl font-bold text-black">CollabIQ</h1>
-            <span className="text-gray-400">|</span>
-            <span className="text-gray-600 text-sm">{currentFile}</span>
-          </div>
+        <div className="px-6 py-4 flex items-center justify-center">
           <button className="px-4 py-2 bg-black text-white text-sm font-semibold rounded-lg hover:bg-gray-900 transition-all">
-            Save & Run
+            Run Code
           </button>
         </div>
       </header>
