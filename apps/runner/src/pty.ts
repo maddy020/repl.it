@@ -22,12 +22,14 @@ export class TerminalManager {
         })
         this.sessions[id] = { replId: replId, terminal: term};
         term.onExit(() => {
+            console.log("exiting terminal")
             delete this.sessions[id];
         });
         return term;
     }
 
     write(terminalId: string, data: string) {
+        console.log("writing to terminal", terminalId);
         this.sessions[terminalId]?.terminal.write(data);
     }
 
