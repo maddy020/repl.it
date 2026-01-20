@@ -31,10 +31,10 @@ spec:
             - |
               aws s3 cp s3://madhav-replit-616298762254-eu-north-1/code/{{ .Release.Name }} /workspace --recursive
           envFrom:
-           - secretRef:
-               name: aws-creds
-           - configMapRef:
-               name: {{ include "repl-service.fullname" . }}        
+            - secretRef:
+                name: aws-creds
+            - configMapRef:
+                name: {{ include "repl-service.fullname" . }}
           volumeMounts:
             - name: workspace
               mountPath: /workspace
@@ -44,14 +44,15 @@ spec:
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           envFrom:
-           - secretRef:
-               name: aws-creds
-           - configMapRef:
-               name: {{ include "repl-service.fullname" . }}
+            - secretRef:
+                name: aws-creds
+            - configMapRef:
+                name: {{ include "repl-service.fullname" . }}
           ports:
-            - name: http
-              containerPort: {{ .Values.service.port }}
-
+            {{- range .Values.service.ports }}
+            - name: {{ .name }}
+              containerPort: {{ .targetPort }}
+            {{- end }}
           volumeMounts:
             - name: workspace
               mountPath: /workspace

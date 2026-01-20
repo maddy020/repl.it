@@ -9,7 +9,7 @@ const features = [
   {
     title: "Zero Setup Required",
     description:
-      "Start coding instantly without installing dependencies or configuring environments.",
+      "Start coding instantly without installing  configuring environments.",
     image: collaborative,
   },
   {
@@ -60,6 +60,7 @@ const Feature = () => {
             text-transparent bg-clip-text
             text-center mt-6
           "
+          id="features"
         >
           Key features
         </h2>

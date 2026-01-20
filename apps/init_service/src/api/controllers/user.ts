@@ -6,7 +6,8 @@ export const User = {
   signup: async (req: Request, res: Response) => {
     try {
       const { formData } = req.body;
-      const { name, email, password } = formData;
+      const { name, email, password ,confirmPassword} = formData;
+      if(password !== confirmPassword)return res.status(400).json({message:"Passwords do not match",status:400,token:""})
       if (!(name || email || password)) {
         return res.status(404).json({ message: "Missing fields" });
       }
@@ -39,6 +40,7 @@ export const User = {
         token: "",
       });
     } catch (error) {
+      console.log("error in sign up",error);
       return res.status(400).json({
         message: "Error in creating the user",
         status: 400,

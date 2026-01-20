@@ -1,37 +1,45 @@
-{{- if .Values.ingress.enabled -}}
 apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: {{ include "repl-service.fullname" . }}
   labels:
     {{- include "repl-service.labels" . | nindent 4 }}
-  {{- with .Values.ingress.annotations }}
   annotations:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/proxy-http-version: "1.1"
+    nginx.ingress.kubernetes.io/connection: upgrade
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+
 spec:
-  {{- with .Values.ingress.className }}
-  ingressClassName: {{ . }}
-  {{- end }}
+  ingressClassName: nginx
+
   tls:
-    - hosts:
+    - secretName: wildcard-replit-tls
+      hosts:
         - "*.replit.bemadhav.xyz"
-      secretName: wildcard-replit-tls
+
   rules:
-    {{- range .Values.ingress.hosts }}
-    - host: {{ default $.Values.host .host | quote }}
+    - host: "output-{{ .Release.Name }}.replit.bemadhav.xyz"
       http:
         paths:
-          {{- range .paths }}
-          - path: {{ .path }}
-            {{- with .pathType }}
-            pathType: {{ . }}
-            {{- end }}
+          - path: /
+            pathType: ImplementationSpecific
             backend:
               service:
-                name: {{ include "repl-service.fullname" $ }}
+                name: {{ include "repl-service.fullname" . }}
                 port:
-                  number: {{ $.Values.service.port }}
-          {{- end }}
-    {{- end }}
-{{- end }}
+                  name: http
+
+    - host: "{{ .Release.Name }}.replit.bemadhav.xyz"
+      http:
+        paths:
+          - path: /
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: {{ include "repl-service.fullname" . }}
+                port:
+                  name: runner

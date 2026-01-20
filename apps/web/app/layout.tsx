@@ -16,7 +16,7 @@ export default async function RootLayout({
   session: Session;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" className="scroll-smooth">
       <Providers session={session}>
         <head>
         <link

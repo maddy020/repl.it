@@ -27,6 +27,10 @@ export const initWebSocket = (httpServer: any) => {
       terminalManager.write(socket.id, data);
     });
 
+    socket.on("closeTerminal", () => {
+      terminalManager.clear(socket.id);
+    });
+
     socket.on("replLoaded", async (data) => {
       try {
         const files: string[] = [];

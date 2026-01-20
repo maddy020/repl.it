@@ -18,8 +18,8 @@ const chartPath = path.resolve(
 
 app.post("/start", async (req: Request, res: Response) => {
     try {
-        const { replId, host } = req.body;
-        console.log("host in this",host);
+        const { replId, host1 , host2 } = req.body;
+            console.log("host in this",host1,host2);
         if (!replId) return res.status(404).json({ message: "ReplId not found" });
         await execa("helm", [
             "upgrade",
@@ -29,7 +29,9 @@ app.post("/start", async (req: Request, res: Response) => {
             "--namespace",
             "default",
             "--set",
-            `host=${host}`,
+            `host1=${host1}`,
+            "--set",
+            `host2=${host2}`,
             "--set",
             "image.tag=latest-stable",
         ]);

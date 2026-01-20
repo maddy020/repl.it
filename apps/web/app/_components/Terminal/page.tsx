@@ -11,6 +11,7 @@ export default function CodingTerminal({socket}:{socket:Socket | null}) {
     function ab2str(buf: ArrayBuffer) {
         return String.fromCharCode.apply(null, [...new Uint8Array(buf)]);
     }
+    
     useEffect(() => {
         const term = new Terminal();
         const fitAddon = new FitAddon();
@@ -42,8 +43,14 @@ export default function CodingTerminal({socket}:{socket:Socket | null}) {
                     break;
             }
         });
+        const handleBeforeUnload = () => {
+            socket?.emit("closeTerminal", { replId: repl && repl[0] });
+        };
+
+        window.addEventListener("beforeunload", handleBeforeUnload);
         return () => {
             socket?.off("terminal", dataHandler);
+            socket?.emit("closeTerminal", { replId: repl && repl[0] });
             term.dispose();
         }
     }, [socket, terminalRef])

@@ -13,7 +13,8 @@ const handleJob = async (job: Job) => {
     await CopyObject(replId, language);
     await axios.post(`${process.env.ORCHESTRATION_SERVICE_URL}/start`, {
       replId,
-      host: `${replId}.${process.env.BASE_DOMAIN_NAME}`,
+      host1: `${replId}.${process.env.BASE_DOMAIN_NAME}`,
+      host2: `${replId}.${process.env.BASEOUTPUT_DOMAIN_NAME}`,
     });
   } catch (error) {
     console.error("Error processing job:", error);

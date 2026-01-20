@@ -23,6 +23,7 @@ export const authOptions: NextAuthOptions = {
       },
 
       async authorize(credentials) {
+        console.log("Credentials received:", credentials);
         const res = await axios.post(
           `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/login`,
           {

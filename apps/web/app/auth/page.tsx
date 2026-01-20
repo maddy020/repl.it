@@ -3,12 +3,14 @@ import { signIn } from 'next-auth/react';
 import React, {useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
+import Loader from '@/_components/Loader/page';
+import axios from "axios";
 
 const AuthPages = () => {
-  const [isLogin, setIsLogin] = useState(true);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [isLoading,setIsLoading]=useState<boolean>(false);
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: '',
@@ -24,17 +26,45 @@ const AuthPages = () => {
     }));
   };
   if(status==="loading"){
-    return <div>Loading...</div>;
+    return <Loader/>
   }
 
   if(status==="authenticated"){
     router.replace('/');
-    return <div>Loading...</div>;
+    return <Loader/>
+  }
+  if(isLoading){
+    return <Loader/>
   }
 
-  const handleSubmit = () => {
-    console.log('Form submitted:', formData);
-    // Add your authentication logic here
+  const handleSubmit = async() => {
+    try {
+      setIsLoading(true);
+    if(!isLogin && formData.password !== formData.confirmPassword){
+      console.log("Passwords do not match");
+      return;
+    }
+    const apiUrl=`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/auth/${isLogin?"login":"signup"}`;
+    const response=await axios.post(apiUrl, {
+      formData
+    });
+    if(response.status===200){
+      await signIn("credentials", {
+        email: formData.email,
+        password: formData.password,
+        redirect: false
+      });
+      router.push("/");
+    }
+    else{
+      throw new Error("Error in authentication");
+    }
+    setIsLoading(false);
+    } catch (error) {
+      setIsLoading(false);
+      router.push("/error");
+      console.log("Error in authentication", error);
+    }
   };
 
   return (
@@ -89,8 +119,8 @@ const AuthPages = () => {
                 </label>
                 <input
                   type="text"
-                  name="fullName"
-                  value={formData.fullName}
+                  name="name"
+                  value={formData.name}
                   onChange={handleInputChange}
                   placeholder="John Doe"
                   className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg text-black placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-black focus:border-transparent transition-all"
@@ -173,8 +203,11 @@ const AuthPages = () => {
             <button
               onClick={(e) => {
                 e.preventDefault();
-                console.log('Continue as guest');
-                // Add your guest login logic here
+                console.log("Continue as guest",process.env.NEXT_PUBLIC_GUEST_EMAIL,process.env.NEXT_PUBLIC_GUEST_PASSWORD);
+                signIn("credentials", {
+                  email: process.env.NEXT_PUBLIC_GUEST_EMAIL,
+                  password: process.env.NEXT_PUBLIC_GUEST_PASSWORD,
+                });
               }}
               className="w-full py-3.5 px-4 bg-white text-black font-semibold rounded-lg border-2 border-black hover:bg-gray-50 hover:shadow-lg hover:scale-[1.02] active:scale-[0.98] transition-all duration-200"
             >

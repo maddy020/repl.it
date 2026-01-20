@@ -20,7 +20,7 @@ const FeatureCard = ({ title, description, image }: FeatureProps) => {
       >
         {/* Image */}
         <div className="flex justify-center">
-          <div className="w-4/5 p-8 flex items-center justify-center">
+          <div className="w-[300px] h-[300px] p-8 flex items-center justify-center">
             <Image
               src={image.src}
               alt={title}

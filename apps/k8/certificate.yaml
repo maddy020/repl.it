@@ -6,7 +6,7 @@ metadata:
 spec:
   secretName: wildcard-replit-tls
   issuerRef:
-    name: letsencrypt-dns
+    name: letsencrypt-prod
     kind: ClusterIssuer
   dnsNames:
     - "*.replit.bemadhav.xyz"

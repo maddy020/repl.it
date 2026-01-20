@@ -6,26 +6,21 @@ import Image from "next/image";
 import logo from "../icons/logo.svg";
 import Link from "next/link";
 import { signOut, useSession } from "next-auth/react";
-import dashboard from "../icons/dashboardImage.svg";
 import { CustomSession } from "@repo/types";
 import { LogOutIcon } from "lucide-react";
+import Loader from "../Loader/page";
 const Appbar = () => {
   const router = useRouter();
-
-  const handleDashboard = () => {
-    router.push("/dashboard/interviewer");
-  };
-
   const {data:session,status}=useSession();
   const user=session && (session as CustomSession).user;
   if(status === "loading"){
-    return <div>Loading...</div>
+    return <Loader/>
   }
   return (
     <header className="w-full border-b bg-white">
       <div className="mx-auto max-w-7xl px-4 py-4">
         <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-3 cursor-pointer" onClick={()=>router.push("/")}>
             <Image
               src={logo}
               width={40}
@@ -38,42 +33,35 @@ const Appbar = () => {
 
           <nav className="hidden md:flex items-center gap-6">
             <Link
-              href="#"
+              href="/#product"
               className="text-black/70 hover:text-black transition"
             >
-              Products
+              Product
             </Link>
             <Link
-              href="#"
+              href="/#api"
               className="text-black/70 hover:text-black transition"
             >
               API & Docs
             </Link>
             <Link
-              href="#"
+              href="/#features"
               className="text-black/70 hover:text-black transition"
             >
-              FAQ
-            </Link>
-            <Link
-              href="#"
-              className="text-black/70 hover:text-black transition"
-            >
-              Company
+              Features
             </Link>
 
-            <button
-              onClick={handleDashboard}
-              className="flex items-center gap-2"
+            <Link
+              href="/dashboard"
+              className="text-black/70 hover:text-black transition"
             >
               Dashboard
-              <Image src={dashboard} width={22} height={22} alt="dashboard" />
-            </button>
+            </Link>
 
 
               <button
                 onClick={() =>status === "unauthenticated" ? router.push("/auth"):signOut()}
-                className="flex items-center gap-2 cursor-pointer"
+                className="flex items-center gap-2 cursor-pointer text-black/70 hover:text-black transition"
               >
                 {status === "unauthenticated"?"Login":`Hi , ${user?.name}`}
                 {status === "authenticated" && (

@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import apiRoutes from "./api/index.js";
-import { createQueue } from "./utils/index.js";
+import { createQueue, seedDb } from "./utils/index.js";
 dotenv.config();
 
 const app = express();
@@ -18,10 +18,11 @@ app.use(express.json());
 
 app.use("/api", apiRoutes);
 const PORT = process.env.PORT || 8080;
-app.listen(PORT, () => {
+app.listen(PORT, async () => {
   createQueue(
     process.env.REDIS_QUEUE_NAME || "init_queue",
     process.env.REDIS_HOST || "localhost"
   );
+  await seedDb();
   console.log(`Init Service running on port ${PORT}`);
 });

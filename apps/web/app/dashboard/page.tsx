@@ -5,10 +5,12 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { CustomSession } from '@repo/types';
+import Loader from '@/_components/Loader/page';
 const Dashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [selectedEnv, setSelectedEnv] = useState(null);
+  const [selectedEnv, setSelectedEnv] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading,setIsLoading]=useState<boolean>(false);
   const [filterBy, setFilterBy] = useState('all');
   const {data:session,status}=useSession();
   const [repls,setRepls]=useState([]);
@@ -26,23 +28,26 @@ const Dashboard = () => {
       name: 'Next.js', 
       icon: '⚛️', 
       color: 'bg-blue-50 border-blue-200 hover:border-blue-400',
-      description: 'Versatile language for building web applications'
+      description: 'Nextjs : Versatile language for building web applications'
     }
   ];
 
   useEffect(()=>{
     async function getYourRepls(){
        try {
-          const repls=await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/repl/get`,{
+        setIsLoading(true);
+          const response = await axios.get(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/repl/get`,{
             headers:{
               Authorization:`Bearer ${(session as CustomSession)?.accessToken}`
             }
           })
-          if(repls.status >=400){
+          if(response.status >=400){
             throw new Error("Error in getting repls");
           }
-          setRepls(repls.data.repls); 
+          setRepls(response.data.repls);
+          setIsLoading(false); 
        } catch (error) {
+        setIsLoading(false);
          console.log("Error in getting all the repls",error);
        }
     }
@@ -62,6 +67,7 @@ const Dashboard = () => {
 
   const handleCreateRepl = async(env:string) => {
    try {
+      setIsLoading(true);
       const response=await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/v1/repl/create`,{
         language:selectedEnv
       },{
@@ -71,19 +77,22 @@ const Dashboard = () => {
       })
       setShowCreateModal(false);
       setSelectedEnv(null);
+      setIsLoading(false);
+      router.push(`/repl/${response.data.repl.replId}`);
    } catch (error) {
+      setIsLoading(false);
       console.log("Error in creating the repl");
    }
 
   };
 
-  if(status === "loading"){
-    return <div>Loading...</div>;
+  if(status === "loading" || isLoading){
+    return <Loader/>
   }
 
   if(status === "unauthenticated"){
     router.push("/auth");
-    return <div>Loading...</div>
+    return <Loader/>
   }
 
   return (
@@ -136,6 +145,7 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
           {filteredProjects.map((project) => (
             <div
+              onClick={() => router.push(`/repl/${project.replId}`)}
               key={project.id}
               className="bg-white border border-gray-200 rounded-lg p-6 hover:border-black hover:shadow-lg transition-all cursor-pointer group"
             >

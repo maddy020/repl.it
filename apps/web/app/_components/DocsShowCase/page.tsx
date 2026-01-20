@@ -2,7 +2,7 @@ import Image from "next/image";
 
 const Docshowcase = () => {
   return (
-    <div className="bg-black text-white pl-8 pt-8 pb-8 mt-40 mb-20 md:mx-40 md:rounded-xl md:pb-0 md:overflow-hidden">
+    <div className="bg-black text-white pl-8 pt-8 pb-8 mt-40 mb-20 md:mx-40 md:rounded-xl md:pb-0 md:overflow-hidden" id="api">
       <div className="border border-white/25 rounded-md shadow-[inset_0_0_5px_rgba(255,255,255,0.55)] h-10 w-22 flex items-center justify-center mb-4">
         <div className="text-sm text-white/70">Repl.it</div>
       </div>

@@ -22,6 +22,7 @@ export default function EditorComp({
   const [currContent, setCurrContent] = useState(editorContent);
   const socketRef = useRef<Socket | null>(null);
   const savingDiffBuff = useRef<DiffEvent[]>([])
+  
 
   useEffect(() => {
     socketRef.current = socket;
@@ -37,6 +38,9 @@ export default function EditorComp({
   }, [socket])
   return (
     <div className="h-full flex flex-col bg-white">
+      <div className="px-4 py-3 border-b bg-white">
+        <h2 className="text-sm font-semibold">Code Editor</h2>
+      </div>
       <Editor
         value={editorContent}
         onChange={(value)=>{
@@ -49,9 +53,10 @@ export default function EditorComp({
       })
         }}
         height="100%"
-        language={currentFile.split(".")[1] === "ts" ? "typescript" : "json"}
+        language={(currentFile.split(".")[1] === "ts" ?"typescript" : (currentFile.split(".")[1] === "tsx") ? "tsx" : "json")}
         defaultLanguage="typescript"
-        defaultValue="function main(){console.log('Hello, World!')}"
+        defaultValue="Your new Coding editor.
+        Select file to make any  edits."
         theme="vs"
         options={{
           minimap: { enabled: false },
