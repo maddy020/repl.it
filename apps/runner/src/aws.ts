@@ -45,7 +45,7 @@ const CopyObject=async(replId:string,language:string,ContinuationToken?:string)=
     }
 
     } catch (error) {
-       console.log("error in copying the s3 folder",error)        
+       console.log("error in copying the s3 directory",error)        
     }
 
 }
