@@ -1,0 +1,26 @@
+initService:
+  image: maddy021/initService
+  replicas: 1
+  port: 8080
+
+# worker:
+#   image: maddy021/worker
+#   replicas: 2
+#   port: 8001
+
+orchestration:
+  image: maddy021/orchestration
+  replicas: 1
+  port: 8081
+
+redis:
+  image: redis
+  replicas: 1
+  port: 6379
+
+# ingress:
+#   enabled: true
+#   host: myproject.example.com
+#   annotations:
+#     kubernetes.io/ingress.class: nginx
+#     cert-manager.io/cluster-issuer: letsencrypt

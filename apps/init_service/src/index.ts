@@ -21,7 +21,8 @@ const PORT = process.env.PORT || 8080;
 app.listen(PORT, async () => {
   createQueue(
     process.env.REDIS_QUEUE_NAME || "init_queue",
-    process.env.REDIS_HOST || "localhost"
+    // process.env.REDIS_HOST || "localhost"
+    process.env.REDIS_HOST || "redis"
   );
   await seedDb();
   console.log(`Init Service running on port ${PORT}`);
