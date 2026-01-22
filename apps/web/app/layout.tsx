@@ -10,14 +10,12 @@ export const metadata: Metadata = {
 
 export default async function RootLayout({
   children,
-  session,
 }: Readonly<{
   children: React.ReactNode;
-  session: Session;
 }>) {
   return (
     <html lang="en" className="scroll-smooth">
-      <Providers session={session}>
+      <Providers>
         <head>
         <link
           rel="stylesheet"

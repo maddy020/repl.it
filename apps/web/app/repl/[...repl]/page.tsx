@@ -101,7 +101,6 @@ export default function Repl() {
           <FileExplorer 
             socket={socket} 
             replId={repl as string} 
-            distanceFromRoot={distanceFromRoot} 
             fileGraph={fileGraph} 
             currentFile={currentFile} 
             setCurrentFile={setCurrentFile}

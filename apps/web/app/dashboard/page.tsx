@@ -5,6 +5,7 @@ import { useSession } from 'next-auth/react';
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
 import { CustomSession } from '@repo/types';
+import type {ReplitProject} from "@repo/types";
 import Loader from '@/_components/Loader/page';
 const Dashboard = () => {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -13,7 +14,7 @@ const Dashboard = () => {
   const [isLoading,setIsLoading]=useState<boolean>(false);
   const [filterBy, setFilterBy] = useState('all');
   const {data:session,status}=useSession();
-  const [repls,setRepls]=useState([]);
+  const [repls,setRepls]=useState<ReplitProject[]>([]);
   const router=useRouter();
   const environments = [
     { 
@@ -233,7 +234,7 @@ const Dashboard = () => {
                 Cancel
               </button>
               <button
-                onClick={() => handleCreateRepl(selectedEnv)}
+                onClick={() => handleCreateRepl(selectedEnv as string)}
                 disabled={!selectedEnv}
                 className={`flex-1 px-6 py-3 font-semibold rounded-lg transition-all ${
                   selectedEnv
