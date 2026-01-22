@@ -24,3 +24,14 @@ redis:
 #   annotations:
 #     kubernetes.io/ingress.class: nginx
 #     cert-manager.io/cluster-issuer: letsencrypt
+
+configMapValues: 
+  INITSERVICEPORT: "8080"
+  FRONTEND_URL: "https://repl-it-web-pfo6.vercel.app"
+  BUCKET_NAME: "madhav-replit-616298762254-eu-north-1"
+  DATABASE_URL: "postgres://d44504f8fce8959f96c654ea9ba15f36416e6b3e484a3b2b325452d195a2ef9f:sk_aXJYqUCge8PB5462TKIUm@db.prisma.io:5432/postgres?sslmode=require"
+  REDIS_HOST: redis
+  REDIS_PORT: 6379
+  REDIS_NAME: init_queue
+  JWT_SECRET: SECRET_JWT
+  ORCHESTRATIONPORT : 8081

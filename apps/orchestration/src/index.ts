@@ -57,5 +57,5 @@ app.post("/stop", async (req: Request, res: Response) => {
     }
 })
 
-const PORT = process.env.PORT || 8081;
+const PORT = process.env.ORCHESTRATIONPORT || 8081;
 app.listen(PORT, () => console.log(`orchestration server is running at ${PORT}`));
