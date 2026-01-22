@@ -1,10 +1,26 @@
-FROM node:20-alpine AS builder
-WORKDIR /app
+FROM node:lts-buster-slim
 
-COPY package.json package-lock.json ./
-COPY packages ./packages
-COPY apps/init_service ./apps/init_service
+WORKDIR /usr/src/app
+
+COPY ../../packages /usr/src/app/packages
+COPY ../../apps/init_service /usr/src/app/apps/init_service
+
+RUN cd packages/database && apt-get update -y && apt-get install -y openssl && npx prisma generate
+
+COPY ../../package.json /usr/src/app/package.json
+COPY ../../turbo.json /usr/src/app/turbo.json
+
+# Install dependencies
+RUN npm install
+
+COPY ../../node_modules/.prisma /usr/src/app/apps/init_service/node_modules/.prisma
+COPY ../../node_modules/.bin /usr/src/app/apps/init_service/node_modules/.bin
 
 RUN npm install
 
-CMD ["npx", "tsx" , "src/index.ts"]
+# Expose ports for both applications
+EXPOSE 8080
+
+WORKDIR /usr/src/app/apps/init_service
+
+CMD ["npm","run","dev"]
