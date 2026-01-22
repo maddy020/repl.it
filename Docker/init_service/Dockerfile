@@ -3,7 +3,7 @@ WORKDIR /app
 
 COPY package.json package-lock.json ./
 COPY packages ./packages
-COPY apps/init-service ./apps/init-service
+COPY apps/init_service ./apps/init_service
 
 RUN npm install
 
