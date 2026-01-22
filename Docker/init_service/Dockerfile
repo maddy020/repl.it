@@ -1,14 +1,10 @@
-FROM node:20-bookworm
+FROM node:20-alpine AS builder
+WORKDIR /app
 
-
-COPY package*.json ./
+COPY package.json package-lock.json ./
+COPY packages ./packages
+COPY apps/init-service ./apps/init-service
 
 RUN npm install
 
-COPY src ./src
-
-COPY . .
-
-EXPOSE 8080
-
-CMD [ "npx","tsx","src/index.ts" ]
+CMD ["npx", "tsx" , "src/index.ts"]
