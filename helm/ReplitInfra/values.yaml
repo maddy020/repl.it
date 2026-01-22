@@ -35,3 +35,6 @@ configMapValues:
   REDIS_NAME: init_queue
   JWT_SECRET: SECRET_JWT
   ORCHESTRATIONPORT : 8081
+  ORCHESTRATION_SERVICE_URL : http://orchestration:8081
+  BASE_DOMAIN_NAME : replit.bemadhav.xyz
+  BASEOUTPUT_DOMAIN_NAME : output.replit.bemadhav.xyz
