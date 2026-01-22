@@ -11,3 +11,10 @@ export interface CustomRequest extends Request {
     name: string;
   };
 }
+
+export type ReplitProject={
+   id:string,
+  replId:string,
+  language:string,
+  env:string
+}
