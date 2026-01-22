@@ -50,7 +50,7 @@ export default function CodingTerminal({socket}:{socket:Socket | null}) {
         window.addEventListener("beforeunload", handleBeforeUnload);
         return () => {
             socket?.off("terminal", dataHandler);
-            socket?.emit("closeTerminal", { replId: repl && repl[0] });
+            // socket?.emit("closeTerminal", { replId: repl && repl[0] });
             term.dispose();
         }
     }, [socket, terminalRef])
