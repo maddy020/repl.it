@@ -13,4 +13,5 @@ RUN npm install
 WORKDIR /usr/src/app/apps/init_service
 
 EXPOSE 8080
+
 CMD ["npm","run","dev"]
