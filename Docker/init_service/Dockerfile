@@ -2,17 +2,15 @@ FROM node:lts-buster-slim
 
 WORKDIR /usr/src/app
 
-COPY ../../packages /usr/src/app/packages
-COPY . /usr/src/app/apps/init_service
+COPY package.json package-lock.json ./
 
-RUN cd packages/database && apt-get update -y && apt-get install -y openssl && npx prisma generate
+COPY packages ./packages
 
-COPY ../../package.json /usr/src/app/package.json
+COPY apps/init_service ./apps/init_service
 
 RUN npm install
 
-EXPOSE 8080
-
 WORKDIR /usr/src/app/apps/init_service
 
+EXPOSE 8080
 CMD ["npm","run","dev"]
