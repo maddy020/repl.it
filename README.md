@@ -2,8 +2,8 @@
 
 A cloud-based online code execution and development platform — built as a Turborepo monorepo — that lets developers spin up isolated environments, write and run code, and deploy directly from the browser with zero local setup.
 
-🎬 **[Watch Demo Video](https://www.loom.com/share/a1502d37c9844334ae8ea1c0152bba85)**
-
+[![Repl.it Demo](https://cdn.loom.com/sessions/thumbnails/a1502d37c9844334ae8ea1c0152bba85-with-play.gif)](https://www.loom.com/share/a1502d37c9844334ae8ea1c0152bba85)
+ 
 🌐 **[Live App](https://repl-it-web-pfo6.vercel.app)**
 
 ---
